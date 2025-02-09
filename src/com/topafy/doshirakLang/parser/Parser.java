@@ -79,7 +79,18 @@ public class Parser {
         if(match(TokenType.WHILE)){
             return whileStatement();
         }
-        System.out.println(get(0));
+        if(match(TokenType.FOR)){
+            return forStatement();
+        }
+        if(match(TokenType.REPEAT)){
+            return repeatStatement();
+        }
+        if(match(TokenType.BREAK)){
+            return new BreakStatement();
+        }
+        if(match(TokenType.CONTINUE)){
+            return new ContinueStatement();
+        }
         return assignmentStatement();
     }
 
@@ -122,6 +133,22 @@ public class Parser {
         final Expression cond = expression();
         final Statement statement = statementOrBlock();
         return new WhileStatement(cond, statement);
+    }
+
+    private Statement forStatement(){
+        final Statement init = assignmentStatement();
+        consume(TokenType.SEMICOLON);
+        final Expression termination = expression();
+        consume(TokenType.SEMICOLON);
+        final Statement increment = assignmentStatement();
+        final Statement statement = statementOrBlock();
+        return new ForStatement(init, termination, increment, statement);
+    }
+
+    private Statement repeatStatement(){
+        final Expression times = expression();
+        final Statement statement = statementOrBlock();
+        return new RepeatStatement(statement, times);
     }
 
     private Expression expression(){

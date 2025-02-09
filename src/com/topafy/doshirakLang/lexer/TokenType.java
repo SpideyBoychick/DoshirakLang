@@ -44,11 +44,14 @@ public enum TokenType {
     WORD,// names
     PRINT,// Console output
     PRINTLN,// Console output this auto \n
+    INPUT,// Input from user
     IF,// condition
     ELSEIF,// condition
     ELSE,// condition
-    WHILE,
-    FOR,
-    REPEAT,
+    WHILE,// repeat code while condition is true
+    FOR,// repeat code with some init, condition and increment
+    REPEAT,// repeat code n times
+    BREAK,// breaks the cycle
+    CONTINUE,// go to the next iteration
     EOF// End of file
 }

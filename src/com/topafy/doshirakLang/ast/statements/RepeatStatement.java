@@ -2,19 +2,18 @@ package com.topafy.doshirakLang.ast.statements;
 
 import com.topafy.doshirakLang.ast.expressions.Expression;
 
-public class WhileStatement implements Statement{
-
-    private final Expression condition;
+public class RepeatStatement implements Statement{
+    private final Expression times;
     private final Statement statement;
 
-    public WhileStatement(Expression condition, Statement statement) {
-        this.condition = condition;
+    public RepeatStatement(Statement statement, Expression times) {
+        this.times = times;
         this.statement = statement;
     }
 
     @Override
     public void execute() {
-        while((boolean)condition.eval().getValue() == true){
+        for(int i = 0; i < (int)times.eval().getValue(); i++){
             try {
                 statement.execute();
             }  catch (BreakStatement bs){
@@ -27,6 +26,6 @@ public class WhileStatement implements Statement{
 
     @Override
     public String toString() {
-        return "while" + condition + " " + statement;
+        return "repeat" + times + " " + statement;
     }
 }

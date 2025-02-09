@@ -212,6 +212,9 @@ public class Lexer {
         if(res.equals("while")) return new Token(TokenType.WHILE, res);
         if(res.equals("for")) return new Token(TokenType.FOR, res);
         if(res.equals("repeat")) return new Token(TokenType.REPEAT, res);
+        if(res.equals("input")) return new Token(TokenType.INPUT, res);
+        if(res.equals("break")) return new Token(TokenType.BREAK, res);
+        if(res.equals("continue")) return new Token(TokenType.CONTINUE, res);
         else return new Token(TokenType.WORD, res);
     }
 

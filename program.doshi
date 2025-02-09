@@ -21,3 +21,12 @@ while doshirak > rolton {
 
 println("ролтон стал слишком большим и лопнул")
 println("доширак победил!!")
+
+for int i = 0; i < 10; i = i + 1 {
+    if i==4 continue
+    if i==8 break
+    println("i = " + i)
+}
+
+repeat 10
+    println("Доширак топ")
