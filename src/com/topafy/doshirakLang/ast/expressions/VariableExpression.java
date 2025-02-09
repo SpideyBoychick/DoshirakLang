@@ -1,6 +1,6 @@
 package com.topafy.doshirakLang.ast.expressions;
 
-import com.topafy.doshirakLang.lib.Value;
+import com.topafy.doshirakLang.lib.TypeValuePair;
 import com.topafy.doshirakLang.lib.Variables;
 
 public class VariableExpression implements Expression {
@@ -11,7 +11,7 @@ public class VariableExpression implements Expression {
     }
 
     @Override
-    public Value eval(){
+    public TypeValuePair eval(){
         if(!Variables.isExists(name)) throw new RuntimeException("Constant doesn't exists");
         return Variables.get(name);
     }

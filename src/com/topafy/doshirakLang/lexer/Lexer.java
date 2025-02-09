@@ -113,7 +113,7 @@ public class Lexer {
         if(res.equals("print")) return new Token(TokenType.PRINT, res);
         if(res.equals("println")) return new Token(TokenType.PRINTLN, res);
         if(res.equals("int")) return new Token(TokenType.INT, res);
-        if(res.equals("float")) return new Token(TokenType.FLOAT, res);
+        if(res.equals("double")) return new Token(TokenType.DOUBLE, res);
         if(res.equals("string")) return new Token(TokenType.STRING, res);
         else return new Token(TokenType.WORD, res);
     }
@@ -123,7 +123,7 @@ public class Lexer {
         TokenType type = TokenType.INT_LITERAL;
         while(currentChar != null){
             if(currentChar == '.'){
-                type = TokenType.FLOAT_LITERAL;
+                type = TokenType.DOUBLE_LITERAL;
                 if(result.indexOf(".") != -1) throw new IllegalArgumentException("Нада только адну точку");
             } else if(!Character.isDigit(currentChar)) break;
             result.append(currentChar);

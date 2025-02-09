@@ -5,28 +5,38 @@ import java.util.Map;
 
 public class Variables {
 
-    private static final IntValue zeroValue = new IntValue(0);
-    private static final Map<String, Value> variables;
+    private static final TypeValuePair zeroValue = new IntValuePair(0);
+    private static final Map<String, TypeValuePair> variables;
 
     static {
         variables = new HashMap<>();
-        variables.put("PI", new DoubleValue(Math.PI));
-        variables.put("PI_2", new DoubleValue(Math.PI / 2));
-        variables.put("PI_4", new DoubleValue(Math.PI / 4));
-        variables.put("E", new DoubleValue(Math.E));
+        variables.put("PI", new DoubleValuePair(Math.PI));
+        variables.put("PI_2", new DoubleValuePair(Math.PI / 2));
+        variables.put("PI_4", new DoubleValuePair(Math.PI / 4));
+        variables.put("E", new DoubleValuePair(Math.E));
     }
 
     public static boolean isExists(String key){
         return variables.containsKey(key);
     }
 
-    public static Value get(String key){
+    public static TypeValuePair get(String key){
         if(!isExists(key)) return zeroValue;
         return variables.get(key);
     }
 
-    public static void set(String key, Value value){
-        variables.put(key, value);
+    public static void set(VariableType type, String name, Object value){
+        TypeValuePair val = switch (type) {
+            case VariableType.INT -> new IntValuePair(value);
+            case VariableType.DOUBLE -> new DoubleValuePair(value);
+            case VariableType.STRING -> new StringValuePair(value);
+        };
+        variables.put(name, val);
     }
+
+    public static void set(String name, TypeValuePair val){
+        variables.put(name, val);
+    }
+
 
 }

@@ -6,6 +6,7 @@ import com.topafy.doshirakLang.ast.statements.PrintStatement;
 import com.topafy.doshirakLang.ast.statements.Statement;
 import com.topafy.doshirakLang.lexer.Token;
 import com.topafy.doshirakLang.lexer.TokenType;
+import com.topafy.doshirakLang.lib.VariableType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +17,7 @@ public class Parser {
     private static final List<TokenType> variableTypes = new ArrayList<>();
     static {
         variableTypes.add(TokenType.INT);
-        variableTypes.add(TokenType.FLOAT);
+        variableTypes.add(TokenType.DOUBLE);
         variableTypes.add(TokenType.STRING);
     }
     private static final Token EOF = new Token(TokenType.EOF, null);
@@ -60,7 +61,7 @@ public class Parser {
         final TokenType vtype = current.getType();
         if(variableTypes.contains(vtype) && get(1).getType() == TokenType.WORD && get(2).getType() == TokenType.ASIGN){
             current = consume(vtype);
-            final String type = current.getValue();
+            final VariableType type = strToVarType(current.getValue());
             current = consume(TokenType.WORD);
             final String name = current.getValue();
             consume(TokenType.ASIGN);
@@ -119,7 +120,7 @@ public class Parser {
 
     private Expression primary(){
         final Token current = get(0);
-        if(match(TokenType.FLOAT_LITERAL)){
+        if(match(TokenType.DOUBLE_LITERAL)){
             return new ValueExpression(Double.parseDouble(current.getValue()));
         }
         if(match(TokenType.INT_LITERAL)){
@@ -149,11 +150,6 @@ public class Parser {
         return true;
     }
 
-    private boolean match(){
-        pos++;
-        return true;
-    }
-
     private Token consume(TokenType type){
         final Token current = get(0);
         if(type != current.getType()) throw new RuntimeException("Wrong token type " + current.getType() + ". Needs:" + type);
@@ -165,5 +161,14 @@ public class Parser {
         final int position = pos + relPos;
         if(position >= size) return EOF;
         return tokens.get(position);
+    }
+
+    private VariableType strToVarType(String str){
+        return switch (str) {
+            case "int" -> VariableType.INT;
+            case "double" -> VariableType.DOUBLE;
+            case "string" -> VariableType.STRING;
+            default -> throw new RuntimeException("Unknown type");
+        };
     }
 }

@@ -8,11 +8,11 @@ public enum TokenType {
 
     INT_LITERAL,// 0123456789
     HEX_NUMBER_LITERAL,// #FCA987
-    FLOAT_LITERAL,//3.141592 2.71 2.5, 80.0
+    DOUBLE_LITERAL,//3.141592 2.71 2.5, 80.0
     STRING_LITERAL,// "Hello world!"
 
     INT,// int
-    FLOAT,// float
+    DOUBLE,// double
     STRING,// string
 
     LPAREN,// (
