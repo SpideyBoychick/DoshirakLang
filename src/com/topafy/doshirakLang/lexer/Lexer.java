@@ -29,16 +29,74 @@ public class Lexer {
                 tokens.add(new Token(TokenType.MUL, "*"));
                 advance();
             }else if(currentChar == '/') {
-                tokens.add(new Token(TokenType.DIV, "/"));
                 advance();
+                if(currentChar == '/') {
+                    skipComments();
+                }
+                else if(currentChar == '*') {
+                    skipMultilineComments();
+                }
+                else
+                    tokens.add(new Token(TokenType.DIV, "/"));
             }else if(currentChar == '=') {
-                tokens.add(new Token(TokenType.ASIGN, "="));
                 advance();
+                if(currentChar == '=') {
+                    tokens.add(new Token(TokenType.EQ, "=="));
+                    advance();
+                }
+                else
+                    tokens.add(new Token(TokenType.ASIGN, "="));
+            }else if(currentChar == '<') {
+                advance();
+                if(currentChar == '=') {
+                    tokens.add(new Token(TokenType.LOWEROREQ, "<="));
+                    advance();
+                }
+                else
+                    tokens.add(new Token(TokenType.LOWER, "<"));
+            }else if(currentChar == '>') {
+                advance();
+                if(currentChar == '=') {
+                    tokens.add(new Token(TokenType.BIGGEROREQ, ">="));
+                    advance();
+                }
+                else
+                    tokens.add(new Token(TokenType.BIGGER, ">"));
+            }else if(currentChar == '!') {
+                advance();
+                if(currentChar == '=') {
+                    tokens.add(new Token(TokenType.NOTEQ, "!="));
+                    advance();
+                }
+                else
+                    tokens.add(new Token(TokenType.EQ, "!"));
+            }else if(currentChar == '|') {
+                advance();
+                if(currentChar == '|') {
+                    tokens.add(new Token(TokenType.OROR, "||"));
+                    advance();
+                }
+                else
+                    tokens.add(new Token(TokenType.OR, "|"));
+            }else if(currentChar == '&') {
+                advance();
+                if(currentChar == '&') {
+                    tokens.add(new Token(TokenType.ANDAND, "&&"));
+                    advance();
+                }
+                else
+                    tokens.add(new Token(TokenType.AND, "&"));
             }else if(currentChar == '(') {
                 tokens.add(new Token(TokenType.LPAREN, "("));
                 advance();
             }else if(currentChar == ')') {
                 tokens.add(new Token(TokenType.RPAREN, ")"));
+                advance();
+            }else if(currentChar == '{') {
+                tokens.add(new Token(TokenType.LFIGURE, "{"));
+                advance();
+            }else if(currentChar == '}') {
+                tokens.add(new Token(TokenType.RFIGURE, "}"));
                 advance();
             }else if(currentChar == ':') {
                 tokens.add(new Token(TokenType.COLON, ":"));
@@ -72,6 +130,38 @@ public class Lexer {
     private void skipWhiteSpaces(){
         while(currentChar != null && Character.isSpaceChar(currentChar))
             advance();
+    }
+
+    private void skipComments() {
+        try {
+            while ("\r\n\0".indexOf(currentChar) == -1) {
+                advance();
+            }
+        } catch (NullPointerException e){
+            advance();
+        }
+    }
+
+    private void skipMultilineComments() {
+        while (true) {
+            advance();
+            if(currentChar != null) {
+                if ("\r\n\0".indexOf(currentChar) != -1) {
+                    throw new RuntimeException("Not closed comment");
+                }
+                if (currentChar == '*') {
+                    advance();
+                    if (currentChar == '/') {
+                        advance();
+                        break;
+                    }
+                }
+            }
+            else{
+                advance();
+                return;
+            }
+        }
     }
 
     private String consumeString(){
@@ -115,6 +205,10 @@ public class Lexer {
         if(res.equals("int")) return new Token(TokenType.INT, res);
         if(res.equals("double")) return new Token(TokenType.DOUBLE, res);
         if(res.equals("string")) return new Token(TokenType.STRING, res);
+        if(res.equals("bool")) return new Token(TokenType.BOOL, res);
+        if(res.equals("if")) return new Token(TokenType.IF, res);
+        if(res.equals("elseif")) return new Token(TokenType.ELSEIF, res);
+        if(res.equals("else")) return new Token(TokenType.ELSE, res);
         else return new Token(TokenType.WORD, res);
     }
 

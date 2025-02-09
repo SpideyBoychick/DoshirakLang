@@ -2,6 +2,7 @@ package com.topafy.doshirakLang.parser;
 
 import com.topafy.doshirakLang.ast.expressions.*;
 import com.topafy.doshirakLang.ast.statements.AssignmentStatement;
+import com.topafy.doshirakLang.ast.statements.IfStatement;
 import com.topafy.doshirakLang.ast.statements.PrintStatement;
 import com.topafy.doshirakLang.ast.statements.Statement;
 import com.topafy.doshirakLang.lexer.Token;
@@ -19,6 +20,7 @@ public class Parser {
         variableTypes.add(TokenType.INT);
         variableTypes.add(TokenType.DOUBLE);
         variableTypes.add(TokenType.STRING);
+        variableTypes.add(TokenType.BOOL);
     }
     private static final Token EOF = new Token(TokenType.EOF, null);
 
@@ -53,6 +55,15 @@ public class Parser {
             consume(TokenType.RPAREN);
             return new PrintStatement(expr, "\n");
         }
+        if(match(TokenType.IF)){
+            return ifElseStatement();
+        }
+        if(match(TokenType.ELSEIF)){
+            return ifElseStatement();
+        }
+        //if(match(TokenType.ELSE)){
+        //    return ifElseStatement();
+        //}
         return assignmentStatement();
     }
 
@@ -70,8 +81,64 @@ public class Parser {
         throw new RuntimeException("Unknown statement");
     }
 
+    private Statement ifElseStatement(){
+        final Expression cond = expression();
+        final Statement ifStatement = statement();
+        Statement elseStatement;
+
+        if(match(TokenType.ELSE)){
+            elseStatement = statement();
+        }
+        else {
+            elseStatement = null;
+        }
+        return new IfStatement(cond, ifStatement, elseStatement);
+    }
+
     private Expression expression(){
-        return additive();
+        return conditional();
+    }
+
+    private Expression conditional(){
+        Expression expr = additive();
+
+        while(true){
+            if(match(TokenType.EQ)){
+                expr = new ConditionExpression("==", expr, additive());
+                continue;
+            }
+            if(match(TokenType.NOTEQ)){
+                expr = new ConditionExpression("!=", expr, additive());
+                continue;
+            }
+            if(match(TokenType.LOWER)){
+                expr = new ConditionExpression("<", expr, additive());
+                continue;
+            }
+            if(match(TokenType.LOWEROREQ)){
+                expr = new ConditionExpression("<=", expr, additive());
+                continue;
+            }
+            if(match(TokenType.BIGGER)){
+                expr = new ConditionExpression(">", expr, additive());
+                continue;
+            }
+            if(match(TokenType.BIGGEROREQ)){
+                expr = new ConditionExpression(">=", expr, additive());
+                continue;
+            }
+            if(match(TokenType.OROR)){
+                expr = new ConditionExpression("||", expr, additive());
+                continue;
+            }
+            if(match(TokenType.ANDAND)){
+                expr = new ConditionExpression("&&", expr, additive());
+                continue;
+            }
+            break;
+        }
+
+        return expr;
     }
 
     private Expression additive(){
@@ -168,6 +235,7 @@ public class Parser {
             case "int" -> VariableType.INT;
             case "double" -> VariableType.DOUBLE;
             case "string" -> VariableType.STRING;
+            case "bool" -> VariableType.BOOL;
             default -> throw new RuntimeException("Unknown type");
         };
     }

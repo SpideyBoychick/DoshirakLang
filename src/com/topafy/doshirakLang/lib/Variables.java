@@ -30,6 +30,7 @@ public class Variables {
             case VariableType.INT -> new IntValuePair(value);
             case VariableType.DOUBLE -> new DoubleValuePair(value);
             case VariableType.STRING -> new StringValuePair(value);
+            case BOOL -> new BooleanValuePair(value);
         };
         variables.put(name, val);
     }

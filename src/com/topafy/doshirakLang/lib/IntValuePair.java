@@ -5,7 +5,11 @@ public class IntValuePair implements TypeValuePair{
     private int value;
 
     public IntValuePair(Object value) {
-        this.value = (int)value;
+        if (value instanceof Boolean) {
+            this.value = (Boolean)value == false ? 0 : 1;
+        } else {
+            this.value = (int) value;
+        }
     }
 
     @Override

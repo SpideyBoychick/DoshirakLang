@@ -1,5 +1,8 @@
-int a = 0
-double b = 7.2
-double c = 3
-println(a + "\n" + b + "\n" + c)
-println(c + 0.2)
+bool a = 1
+bool b = 0
+println(a || b)
+
+int doshirak = 9999
+double rolton = 0.0001
+if doshirak > rolton println("Тест if-а прошёл успешно")
+else println("Ошибка, ошибка!")//ДоширакЛанг куда круче ролтонЛанга

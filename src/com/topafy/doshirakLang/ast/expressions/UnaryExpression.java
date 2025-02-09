@@ -35,6 +35,12 @@ public class UnaryExpression implements Expression {
                     case '-' -> reverseString((String)res.getValue());
                     default -> throw new IllegalArgumentException("Wrong operation" + operation);
                 };
+
+            case VariableType.BOOL:
+                return switch (operation){
+                    case '!' -> new BooleanValuePair(!(boolean)res.getValue());
+                    default -> throw new IllegalArgumentException("Wrong operation" + operation);
+                };
         }
         throw new RuntimeException("Unknown type of variable");
     }
