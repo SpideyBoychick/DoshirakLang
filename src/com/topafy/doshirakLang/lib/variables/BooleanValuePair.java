@@ -1,6 +1,6 @@
-package com.topafy.doshirakLang.lib;
+package com.topafy.doshirakLang.lib.variables;
 
-public class BooleanValuePair implements TypeValuePair{
+public class BooleanValuePair implements TypeValuePair {
 
     private boolean value;
 

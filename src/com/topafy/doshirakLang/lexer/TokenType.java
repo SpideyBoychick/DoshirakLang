@@ -9,6 +9,13 @@ public enum TokenType {
     OROR,// ||
     AND,// &
     ANDAND,// &&
+    LOWER,// <
+    BIGGER,// >
+    LOWEROREQ,// <=
+    BIGGEROREQ,// >=
+    EQ,// ==
+    NOT,// !
+    NOTEQ,// !=
 
     //data
     INT_LITERAL,// 0123456789
@@ -32,19 +39,10 @@ public enum TokenType {
     ASIGN,// =
     COLON,// :
     SEMICOLON,// ;
-    LOWER,// <
-    BIGGER,// >
-    LOWEROREQ,// <=
-    BIGGEROREQ,// >=
-    EQ,// ==
-    NOT,// !
-    NOTEQ,// !=
+    COMMA,// ,
 
     //keyWords and names
     WORD,// names
-    PRINT,// Console output
-    PRINTLN,// Console output this auto \n
-    INPUT,// Input from user
     IF,// condition
     ELSEIF,// condition
     ELSE,// condition

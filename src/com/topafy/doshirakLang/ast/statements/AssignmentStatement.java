@@ -1,9 +1,9 @@
 package com.topafy.doshirakLang.ast.statements;
 
 import com.topafy.doshirakLang.ast.expressions.Expression;
-import com.topafy.doshirakLang.lib.TypeValuePair;
-import com.topafy.doshirakLang.lib.VariableType;
-import com.topafy.doshirakLang.lib.Variables;
+import com.topafy.doshirakLang.lib.variables.TypeValuePair;
+import com.topafy.doshirakLang.lib.variables.VariableType;
+import com.topafy.doshirakLang.lib.variables.Variables;
 
 public class AssignmentStatement implements Statement{
     private final VariableType variableType;

@@ -1,6 +1,6 @@
-package com.topafy.doshirakLang.lib;
+package com.topafy.doshirakLang.lib.variables;
 
-public class IntValuePair implements TypeValuePair{
+public class IntValuePair implements TypeValuePair {
 
     private int value;
 

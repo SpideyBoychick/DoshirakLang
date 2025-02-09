@@ -1,7 +1,7 @@
 package com.topafy.doshirakLang.ast.expressions;
 
-import com.topafy.doshirakLang.lib.TypeValuePair;
-import com.topafy.doshirakLang.lib.Variables;
+import com.topafy.doshirakLang.lib.variables.TypeValuePair;
+import com.topafy.doshirakLang.lib.variables.Variables;
 
 public class VariableExpression implements Expression {
     private final String name;

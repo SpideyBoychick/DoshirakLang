@@ -1,4 +1,4 @@
-package com.topafy.doshirakLang.lib;
+package com.topafy.doshirakLang.lib.variables;
 
 public interface TypeValuePair {
     VariableType getType();

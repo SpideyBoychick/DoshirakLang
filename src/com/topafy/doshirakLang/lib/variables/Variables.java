@@ -1,10 +1,11 @@
-package com.topafy.doshirakLang.lib;
+package com.topafy.doshirakLang.lib.variables;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class Variables {
 
+    private static final VoidValue voidVal = new VoidValue();
     private static final TypeValuePair zeroValue = new IntValuePair(0);
     private static final Map<String, TypeValuePair> variables;
 
@@ -33,9 +34,16 @@ public class Variables {
             case VariableType.INT -> new IntValuePair(value);
             case VariableType.DOUBLE -> new DoubleValuePair(value);
             case VariableType.STRING -> new StringValuePair(value);
+            case VariableType.VOID -> voidVal;
             case BOOL -> new BooleanValuePair(value);
         };
-        variables.put(name, val);
+
+        if (!isExists(name)) {
+            variables.put(name, val);
+        }
+        else {
+            variables.replace(name, val);
+        }
     }
 
     public static void set(String name, TypeValuePair val) {

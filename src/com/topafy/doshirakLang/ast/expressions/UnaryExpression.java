@@ -1,6 +1,6 @@
 package com.topafy.doshirakLang.ast.expressions;
 
-import com.topafy.doshirakLang.lib.*;
+import com.topafy.doshirakLang.lib.variables.*;
 
 public class UnaryExpression implements Expression {
     private final Expression expr;

@@ -1,8 +1,6 @@
 package com.topafy.doshirakLang.ast.expressions;
 
-import com.topafy.doshirakLang.lib.*;
-
-import java.awt.*;
+import com.topafy.doshirakLang.lib.variables.*;
 
 public class BinaryExpression implements Expression {
 

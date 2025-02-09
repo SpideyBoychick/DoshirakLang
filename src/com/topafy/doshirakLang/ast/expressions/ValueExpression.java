@@ -1,9 +1,9 @@
 package com.topafy.doshirakLang.ast.expressions;
 
-import com.topafy.doshirakLang.lib.DoubleValuePair;
-import com.topafy.doshirakLang.lib.IntValuePair;
-import com.topafy.doshirakLang.lib.StringValuePair;
-import com.topafy.doshirakLang.lib.TypeValuePair;
+import com.topafy.doshirakLang.lib.variables.DoubleValuePair;
+import com.topafy.doshirakLang.lib.variables.IntValuePair;
+import com.topafy.doshirakLang.lib.variables.StringValuePair;
+import com.topafy.doshirakLang.lib.variables.TypeValuePair;
 
 public class ValueExpression implements Expression {
 

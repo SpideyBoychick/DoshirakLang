@@ -1,10 +1,7 @@
 package com.topafy.doshirakLang.ast.statements;
 
 import com.topafy.doshirakLang.ast.expressions.Expression;
-import com.topafy.doshirakLang.lib.BooleanValuePair;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.topafy.doshirakLang.lib.variables.BooleanValuePair;
 
 public class IfStatement implements Statement{
 

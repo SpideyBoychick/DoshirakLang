@@ -30,3 +30,12 @@ for int i = 0; i < 10; i = i + 1 {
 
 repeat 10
     println("Доширак топ")
+
+println(sin(2))
+println(cos(2))
+println(tg(2))
+println(ctg(2))
+
+println("Введите число")
+int a = readInt()
+println("Синус вашего числа - " + sin(a))

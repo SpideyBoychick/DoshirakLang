@@ -1,6 +1,8 @@
 package com.topafy.doshirakLang.ast.expressions;
 
-import com.topafy.doshirakLang.lib.*;
+import com.topafy.doshirakLang.lib.variables.BooleanValuePair;
+import com.topafy.doshirakLang.lib.variables.TypeValuePair;
+import com.topafy.doshirakLang.lib.variables.VariableType;
 
 public class ConditionExpression implements Expression {
 

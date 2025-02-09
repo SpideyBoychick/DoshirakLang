@@ -4,9 +4,9 @@ import com.topafy.doshirakLang.ast.expressions.*;
 import com.topafy.doshirakLang.ast.statements.*;
 import com.topafy.doshirakLang.lexer.Token;
 import com.topafy.doshirakLang.lexer.TokenType;
-import com.topafy.doshirakLang.lib.TypeValuePair;
-import com.topafy.doshirakLang.lib.VariableType;
-import com.topafy.doshirakLang.lib.Variables;
+import com.topafy.doshirakLang.lib.variables.TypeValuePair;
+import com.topafy.doshirakLang.lib.variables.VariableType;
+import com.topafy.doshirakLang.lib.variables.Variables;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,18 +61,6 @@ public class Parser {
     }
 
     private Statement statement(){
-        if(match(TokenType.PRINT)){
-            consume(TokenType.LPAREN);
-            Expression expr = expression();
-            consume(TokenType.RPAREN);
-            return new PrintStatement(expr);
-        }
-        if(match(TokenType.PRINTLN)){
-            consume(TokenType.LPAREN);
-            Expression expr = expression();
-            consume(TokenType.RPAREN);
-            return new PrintStatement(expr, "\n");
-        }
         if(match(TokenType.IF)){
             return ifElseStatement();
         }
@@ -90,6 +78,9 @@ public class Parser {
         }
         if(match(TokenType.CONTINUE)){
             return new ContinueStatement();
+        }
+        if(get(0).getType() == TokenType.WORD && get(1).getType() == TokenType.LPAREN){
+            return new FunctionalStatement(functional());
         }
         return assignmentStatement();
     }
@@ -149,6 +140,17 @@ public class Parser {
         final Expression times = expression();
         final Statement statement = statementOrBlock();
         return new RepeatStatement(statement, times);
+    }
+
+    private FunctionalExpression functional(){
+        final String name = consume(TokenType.WORD).getValue();
+        consume(TokenType.LPAREN);
+        final FunctionalExpression function = new FunctionalExpression(name);
+        while(!match(TokenType.RPAREN)){
+            function.addArg(expression());
+            match(TokenType.COMMA);
+        }
+        return function;
     }
 
     private Expression expression(){
@@ -283,6 +285,9 @@ public class Parser {
         }
         if(match(TokenType.HEX_NUMBER_LITERAL)){
             return new ValueExpression(Long.parseLong(current.getValue(), 16));
+        }
+        if(get(0).getType() == TokenType.WORD && get(1).getType() == TokenType.LPAREN){
+            return functional();
         }
         if(match(TokenType.WORD)){
             return new VariableExpression(current.getValue());
