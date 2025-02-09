@@ -1,5 +1,6 @@
 package com.topafy.doshirakLang.parser;
 
+import com.topafy.doshirakLang.ast.statements.BlockStatement;
 import com.topafy.doshirakLang.ast.statements.Statement;
 import com.topafy.doshirakLang.lexer.Lexer;
 import com.topafy.doshirakLang.lexer.Token;
@@ -23,13 +24,9 @@ public class TestParser {
         for(Token t : tokens){
             //System.out.println(t);
         }
-        List<Statement> statements = new Parser(tokens).parse();
-        for (Statement stat : statements){
-            //System.out.println(stat);
-        }
+        BlockStatement statements = new Parser(tokens).parse();
+        //System.out.println(statements.toString());
         //System.out.println("-----Вывод-----");
-        for (Statement stat : statements){
-            stat.execute();
-        }
+        statements.execute();
     }
 }

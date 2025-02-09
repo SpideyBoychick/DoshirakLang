@@ -14,6 +14,9 @@ public class Variables {
         variables.put("PI_2", new DoubleValuePair(Math.PI / 2));
         variables.put("PI_4", new DoubleValuePair(Math.PI / 4));
         variables.put("E", new DoubleValuePair(Math.E));
+
+        variables.put("false", new BooleanValuePair(false));
+        variables.put("true", new BooleanValuePair(true));
     }
 
     public static boolean isExists(String key){
@@ -35,8 +38,13 @@ public class Variables {
         variables.put(name, val);
     }
 
-    public static void set(String name, TypeValuePair val){
-        variables.put(name, val);
+    public static void set(String name, TypeValuePair val) {
+        if (!isExists(name)) {
+            variables.put(name, val);
+        }
+        else {
+            variables.replace(name, val);
+        }
     }
 
 

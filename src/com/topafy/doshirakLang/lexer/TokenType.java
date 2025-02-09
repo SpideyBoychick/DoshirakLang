@@ -47,5 +47,8 @@ public enum TokenType {
     IF,// condition
     ELSEIF,// condition
     ELSE,// condition
+    WHILE,
+    FOR,
+    REPEAT,
     EOF// End of file
 }

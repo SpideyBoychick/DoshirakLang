@@ -1,8 +1,23 @@
-bool a = 1
-bool b = 0
+bool a = true
+bool b = false
 println(a || b)
 
 int doshirak = 9999
 double rolton = 0.0001
-if doshirak > rolton println("Тест if-а прошёл успешно")
+if (doshirak > rolton) println("Тест if-а прошёл успешно")
 else println("Ошибка, ошибка!")//ДоширакЛанг куда круче ролтонЛанга
+
+if 2>1 {
+    println("1 строчка")
+    println("2 строчка")
+    println("3 строчка")
+    println("4 строчка")
+}
+
+while doshirak > rolton {
+    rolton = rolton * 2
+    println("доширак ещё больше ролтона")
+}
+
+println("ролтон стал слишком большим и лопнул")
+println("доширак победил!!")

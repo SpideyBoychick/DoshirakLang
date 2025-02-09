@@ -69,7 +69,7 @@ public class Lexer {
                     advance();
                 }
                 else
-                    tokens.add(new Token(TokenType.EQ, "!"));
+                    tokens.add(new Token(TokenType.NOT, "!"));
             }else if(currentChar == '|') {
                 advance();
                 if(currentChar == '|') {
@@ -209,6 +209,9 @@ public class Lexer {
         if(res.equals("if")) return new Token(TokenType.IF, res);
         if(res.equals("elseif")) return new Token(TokenType.ELSEIF, res);
         if(res.equals("else")) return new Token(TokenType.ELSE, res);
+        if(res.equals("while")) return new Token(TokenType.WHILE, res);
+        if(res.equals("for")) return new Token(TokenType.FOR, res);
+        if(res.equals("repeat")) return new Token(TokenType.REPEAT, res);
         else return new Token(TokenType.WORD, res);
     }
 

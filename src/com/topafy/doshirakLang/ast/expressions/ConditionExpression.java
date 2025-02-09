@@ -63,8 +63,10 @@ public class ConditionExpression implements Expression {
             }
         }
         else if(value1.getType() == VariableType.BOOL || value2.getType() == VariableType.BOOL){
-            final boolean bool1 = intToBool(Integer.parseInt(value1.getValue().toString()));
-            final boolean bool2 = intToBool(Integer.parseInt(value2.getValue().toString()));
+
+            final boolean bool1 = (boolean)value1.getValue();
+            final boolean bool2 = (boolean)value2.getValue();
+
             switch (operation){
                 case "||": return new BooleanValuePair(bool1 || bool2);
                 case "&&": return new BooleanValuePair(bool1 && bool2);
@@ -85,6 +87,6 @@ public class ConditionExpression implements Expression {
 
     @Override
     public String toString() {
-        return String.format("(%s%c%s)", expr1, operation, expr2);
+        return String.format("(%s%s%s)", expr1, operation, expr2);
     }
 }

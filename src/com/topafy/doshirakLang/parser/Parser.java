@@ -1,13 +1,12 @@
 package com.topafy.doshirakLang.parser;
 
 import com.topafy.doshirakLang.ast.expressions.*;
-import com.topafy.doshirakLang.ast.statements.AssignmentStatement;
-import com.topafy.doshirakLang.ast.statements.IfStatement;
-import com.topafy.doshirakLang.ast.statements.PrintStatement;
-import com.topafy.doshirakLang.ast.statements.Statement;
+import com.topafy.doshirakLang.ast.statements.*;
 import com.topafy.doshirakLang.lexer.Token;
 import com.topafy.doshirakLang.lexer.TokenType;
+import com.topafy.doshirakLang.lib.TypeValuePair;
 import com.topafy.doshirakLang.lib.VariableType;
+import com.topafy.doshirakLang.lib.Variables;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,12 +33,31 @@ public class Parser {
         this.size = tokens.size();
     }
 
-    public List<Statement> parse(){
-        final List<Statement> res = new ArrayList<>();
+    public BlockStatement parse(){
+        final BlockStatement res = new BlockStatement();
+
         while(!match(TokenType.EOF)){
             res.add(statement());
         }
         return res;
+    }
+
+    private Statement block(){
+        final BlockStatement block = new BlockStatement();
+        consume(TokenType.LFIGURE);
+        while(!match(TokenType.RFIGURE)){
+            block.add(statement());
+        }
+        return block;
+    }
+
+    private Statement statementOrBlock(){
+        if(get(0).getType() == TokenType.LFIGURE){
+            return block();
+        }
+        else{
+            return statement();
+        }
     }
 
     private Statement statement(){
@@ -58,12 +76,10 @@ public class Parser {
         if(match(TokenType.IF)){
             return ifElseStatement();
         }
-        if(match(TokenType.ELSEIF)){
-            return ifElseStatement();
+        if(match(TokenType.WHILE)){
+            return whileStatement();
         }
-        //if(match(TokenType.ELSE)){
-        //    return ifElseStatement();
-        //}
+        System.out.println(get(0));
         return assignmentStatement();
     }
 
@@ -78,16 +94,23 @@ public class Parser {
             consume(TokenType.ASIGN);
             return new AssignmentStatement(type, name, expression());
         }
+        else if(get(0).getType() == TokenType.WORD && get(1).getType() == TokenType.ASIGN){
+            current = consume(TokenType.WORD);
+            final String name = current.getValue().toString();
+            TypeValuePair value = Variables.get(name);
+            consume(TokenType.ASIGN);
+            return new AssignmentStatement(value.getType(), name, expression());
+        }
         throw new RuntimeException("Unknown statement");
     }
 
     private Statement ifElseStatement(){
         final Expression cond = expression();
-        final Statement ifStatement = statement();
+        final Statement ifStatement = statementOrBlock();
         Statement elseStatement;
 
         if(match(TokenType.ELSE)){
-            elseStatement = statement();
+            elseStatement = statementOrBlock();
         }
         else {
             elseStatement = null;
@@ -95,8 +118,51 @@ public class Parser {
         return new IfStatement(cond, ifStatement, elseStatement);
     }
 
+    private Statement whileStatement(){
+        final Expression cond = expression();
+        final Statement statement = statementOrBlock();
+        return new WhileStatement(cond, statement);
+    }
+
     private Expression expression(){
-        return conditional();
+        return logicalOr();
+    }
+
+    private Expression logicalOr(){
+        Expression expr = logicalAnd();
+        while (true) {
+            if (match(TokenType.OROR)) {
+                expr = new ConditionExpression("||", expr, logicalAnd());
+                continue;
+            }
+            break;
+        }
+        return expr;
+    }
+
+    private Expression logicalAnd(){
+        Expression expr = equality();
+        while (true) {
+            if (match(TokenType.ANDAND)) {
+                expr = new ConditionExpression("&&", expr, equality());
+                continue;
+            }
+            break;
+        }
+        return expr;
+    }
+
+    private Expression equality(){
+        Expression expr = conditional();
+
+        if (match(TokenType.EQ)) {
+            return new ConditionExpression("==", expr, conditional());
+        }
+        if (match(TokenType.NOTEQ)) {
+            return new ConditionExpression("!=", expr, conditional());
+        }
+
+        return expr;
     }
 
     private Expression conditional(){
@@ -125,14 +191,6 @@ public class Parser {
             }
             if(match(TokenType.BIGGEROREQ)){
                 expr = new ConditionExpression(">=", expr, additive());
-                continue;
-            }
-            if(match(TokenType.OROR)){
-                expr = new ConditionExpression("||", expr, additive());
-                continue;
-            }
-            if(match(TokenType.ANDAND)){
-                expr = new ConditionExpression("&&", expr, additive());
                 continue;
             }
             break;
@@ -181,6 +239,9 @@ public class Parser {
         }
         if(match(TokenType.MINUS)){
             return new UnaryExpression('-', primary());
+        }
+        if(match(TokenType.NOT)){
+            return new UnaryExpression('!', primary());
         }
         return primary();
     }
